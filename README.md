@@ -4,9 +4,9 @@
 
 **Finding:** The share of US businesses paying for AI rose from **44.4% (Dec 2025) to 56.8% (Oct 2026)** after stalling in late 2025. Over the same months, Anthropic's share went from **17.8% to 44.8%** and passed OpenAI in May 2026, while OpenAI's held near **40%**.
 
-![AI adoption chart](images/ai_adoption_chart.png)
+![AI adoption chart](ai_adoption_chart.png)
 
-📄 **Full one-page write-up:** [Handshake AI Showcase](https://app.joinhandshake.com/ai-showcase/projects/3819322)
+📄 **Full write-up:** [AI_Adoption_2026_report.pdf](AI_Adoption_2026_report.pdf) · [Handshake AI Showcase](https://app.joinhandshake.com/ai-showcase/projects/3819322)
 
 ## Does the trend hold up?
 
@@ -35,10 +35,11 @@ AI buying is becoming multi-vendor. Finance and IT teams should budget for more 
 
 | Path | What it is |
 |---|---|
+| `AI_Adoption_2026_report.pdf` | The full write-up with chart, robustness check and explanations |
 | `analysis.py` | Reproduces every number above and redraws the chart |
-| `data/ai_adoption_by_vendor_monthly.csv` | Monthly share of businesses paying for any AI tool, OpenAI and Anthropic (Jan 2025 to Oct 2026) |
-| `data/ai_adoption_by_size.csv` | AI adoption by company size, Dec 2025 and Oct 2026 |
-| `images/` | Charts |
+| `ai_adoption_by_vendor_monthly.csv` | Monthly share of businesses paying for any AI tool, OpenAI and Anthropic (Jan 2025 to Oct 2026) |
+| `ai_adoption_by_size.csv` | AI adoption by company size, Dec 2025 and Oct 2026 |
+| `ai_adoption_chart.png`, `ai_adoption_chart_matplotlib.png` | Charts |
 
 ```bash
 pip install pandas matplotlib
