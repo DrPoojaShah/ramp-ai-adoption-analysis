@@ -7,7 +7,7 @@ Reproduces every number in the write-up:
   3. Robustness: the jump by company size
   4. The overlap test: a lower bound on businesses paying BOTH vendors
 
-Data: data/*.csv, exported from the Ramp Data connector (shares in %, rounded to 0.1-0.01).
+Data: the two CSV files in this folder, exported from the Ramp Data connector (shares in %, rounded to 0.1-0.01).
 Run:  python analysis.py
 """
 import pandas as pd
@@ -15,8 +15,8 @@ import matplotlib.pyplot as plt
 
 START, END = "2025-12", "2026-10"
 
-vendors = pd.read_csv("data/ai_adoption_by_vendor_monthly.csv").set_index("month")
-sizes = pd.read_csv("data/ai_adoption_by_size.csv")
+vendors = pd.read_csv("ai_adoption_by_vendor_monthly.csv").set_index("month")
+sizes = pd.read_csv("ai_adoption_by_size.csv")
 
 # 1. Baseline
 overall_start = vendors.loc[START, "all_ai_vendors_pct"]
@@ -62,5 +62,5 @@ ax.set_title("AI adoption rose 12 points in 2026 as Anthropic gained 27 and Open
 ax.legend(frameon=False)
 ax.spines[["top", "right"]].set_visible(False)
 fig.tight_layout()
-fig.savefig("images/ai_adoption_chart_matplotlib.png", dpi=150)
-print("\nSaved images/ai_adoption_chart_matplotlib.png")
+fig.savefig("ai_adoption_chart_matplotlib.png", dpi=150)
+print("\nSaved ai_adoption_chart_matplotlib.png")
