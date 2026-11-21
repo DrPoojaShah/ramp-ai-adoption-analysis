@@ -6,6 +6,8 @@
 
 ![AI adoption chart](ai_adoption_chart.png)
 
+🚀 **[Live demo: read the interactive data story](https://drpoojashah.github.io/ramp-ai-adoption-analysis/)** (no login needed)
+
 📄 **Full write-up:** [AI_Adoption_2026_report.pdf](AI_Adoption_2026_report.pdf) · [Handshake AI Showcase](https://app.joinhandshake.com/ai-showcase/projects/3819322)
 
 ## Does the trend hold up?
