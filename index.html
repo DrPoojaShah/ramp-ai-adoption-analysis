@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Business AI Adoption Jumped 12 Points in 2026 | Pooja Shah</title>
+<meta name="description" content="A data story on Ramp spending data from 50,000+ US businesses: AI adoption rose from 44.4% to 56.8% in 2026, and at least half of Anthropic's gain came from businesses adding a second AI vendor.">
+<meta property="og:title" content="Business AI adoption jumped 12 points in 2026">
+<meta property="og:description" content="AI adoption rose from 44.4% to 56.8% (Dec 2025 to Oct 2026). Anthropic's share went from 17.8% to 44.8% while OpenAI's held near 40%. A data story by Pooja Shah.">
+<meta property="og:image" content="ai_adoption_chart.png">
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<style>
+:root { --bg:#fafaf7; --panel:#fff; --fg:#1d1d1b; --muted:#6b6b66; --line:#e4e2dc; --grid:#ecebe6; --axis:#b9b7b0; --accent:#2a6fdb; --neutral:#a9a7a0; --light:#cfcdc6; --good:#23824c; --tip:#fff; }
+@media (prefers-color-scheme: dark) { :root { --bg:#1b1b19; --panel:#242422; --fg:#f1f0eb; --muted:#a3a29c; --line:#3a3936; --grid:#2f2e2b; --axis:#55534e; --accent:#5b93ef; --neutral:#8d8b85; --light:#5c5a55; --good:#5cc28a; --tip:#2b2b29; } }
+* { box-sizing: border-box; }
+body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; }
+.wrap { max-width: 760px; margin: 0 auto; padding: 36px 20px 56px; }
+.kicker { color: var(--accent); font-size: 13px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+h1 { font-family: Georgia,"Times New Roman",serif; font-weight: 400; font-size: clamp(30px,5vw,44px); line-height: 1.15; margin: 8px 0 14px; }
+h2 { font-size: 20px; margin: 40px 0 8px; }
+p { margin: 0 0 14px; }
+.lede { font-size: 18px; }
+.byline { color: var(--muted); font-size: 14px; margin-bottom: 28px; }
+a { color: var(--accent); text-decoration: none; } a:hover { text-decoration: underline; }
+.chart { position: relative; margin: 18px 0 6px; }
+.chart svg text { font-size: 12px; fill: var(--muted); }
+.chart svg text.strong { fill: var(--fg); }
+.chart svg text.acc { fill: var(--accent); font-weight: 600; }
+.caption { color: var(--muted); font-size: 13px; }
+.tip { position:absolute; pointer-events:none; background:var(--tip); border:1px solid var(--line); box-shadow:0 4px 14px rgba(0,0,0,.12); border-radius:8px; padding:6px 9px; font-size:12px; white-space:nowrap; z-index:5; }
+.tip div:first-child { font-weight: 600; }
+table { border-collapse: collapse; width: 100%; font-size: 15px; font-variant-numeric: tabular-nums; margin: 10px 0 14px; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+th { color: var(--muted); font-weight: 500; font-size: 13px; }
+td.num, th.num { text-align: right; }
+.pos { color: var(--good); font-weight: 600; }
+.cards { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 14px 0; }
+@media (max-width: 600px) { .cards { grid-template-columns: 1fr; } }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px; }
+.card h3 { margin: 0 0 6px; font-size: 16px; }
+.card .verdict { font-size: 13px; color: var(--muted); }
+.callout { border-left: 3px solid var(--accent); padding: 4px 0 4px 14px; margin: 18px 0; }
+ul { padding-left: 20px; } li { margin-bottom: 6px; }
+.links { display: flex; gap: 10px; flex-wrap: wrap; margin: 26px 0 0; }
+.btn { border: 1px solid var(--line); background: var(--panel); border-radius: 8px; padding: 8px 14px; font-size: 14px; color: var(--fg); }
+footer { border-top: 1px solid var(--line); margin-top: 40px; padding-top: 16px; color: var(--muted); font-size: 13px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="kicker">Data story · Ramp spending data</div>
+  <h1>Business AI adoption jumped 12 points in 2026, and Anthropic grew with it</h1>
+  <p class="lede">The share of US businesses paying for AI rose from <b>44.4%</b> in December 2025 to <b>56.8%</b> in October 2026, after stalling in late 2025. Over the same months, Anthropic's share went from <b>17.8%</b> to <b>44.8%</b> and passed OpenAI in May 2026, while OpenAI's held near <b>40%</b>.</p>
+  <div class="byline">By <a href="https://www.linkedin.com/in/drpoojashah">Pooja Shah</a> · Data: Ramp AI Index, 50,000+ US businesses, pulled November 2026</div>
+
+  <div class="chart" id="chart"></div>
+  <div class="caption">Share of US businesses on Ramp paying for each AI vendor, by month. Vendor shares overlap because one business can pay several vendors. Hover the chart for monthly values.</div>
+
+  <h2>Does it hold up?</h2>
+  <p>Yes. The 2026 jump appears for small, medium and large businesses alike, after all three were flat from August to December 2025.</p>
+  <table>
+    <thead><tr><th>Company size</th><th class="num">Dec 2025</th><th class="num">Oct 2026</th><th class="num">Change</th></tr></thead>
+    <tbody id="sizeRows"></tbody>
+  </table>
+  <p>Size still matters: large businesses lead small ones by about 15 points, and that gap did not close in 2026.</p>
+
+  <h2>Why did it happen?</h2>
+  <p>Two explanations fit the headline. The data supports both, but the second accounts for more of the growth.</p>
+  <div class="cards">
+    <div class="card"><h3>1. New adopters</h3><p>Businesses that paid for no AI started paying in 2026.</p><div class="verdict">Can explain at most the <b>12.4-point</b> rise in overall adoption.</div></div>
+    <div class="card"><h3>2. Existing users added a vendor</h3><p>Businesses already paying for AI added Anthropic as a second tool.</p><div class="verdict">Anthropic gained <b>27.0 points</b>, so at least <b>14.6 points</b> came from existing AI buyers.</div></div>
+  </div>
+  <div class="callout"><b>The overlap check.</b> For any two groups, the share paying both is at least <i>OpenAI + Anthropic − overall</i>. At least <b>28.6%</b> of businesses paid both vendors in October 2026, up from at least <b>14.3%</b> in December 2025. OpenAI's share didn't fall, so businesses were adding, not switching.</div>
+  <p><b>Still unresolved:</b> which vendor the new adopters chose, and <i>why</i> buying changed in 2026. Product launches, pricing or Ramp's own customer mix could all play a part, and this data cannot tell them apart.</p>
+
+  <h2>So what</h2>
+  <p>AI buying is becoming multi-vendor. Finance and IT teams should budget for more than one AI subscription per team and review overlapping seats. For AI vendors, most 2026 growth came from winning businesses that already use a rival. Small businesses still trail large ones by about 15 points, so they are the largest group not yet buying.</p>
+
+  <h2>Data notes</h2>
+  <ul>
+    <li>Source: Ramp AI Index via the free Ramp Data connector. Each figure is the share of US businesses on Ramp with paid spend on an AI tool that month.</li>
+    <li>Only spending through Ramp cards and bill pay is counted; free tiers and tools paid another way are missed.</li>
+    <li>Ramp reports no Google data after June 2023, so Google is left out.</li>
+  </ul>
+
+  <div class="links">
+    <a class="btn" href="https://github.com/DrPoojaShah/ramp-ai-adoption-analysis">Code & data on GitHub</a>
+    <a class="btn" href="AI_Adoption_2026_report.pdf">Download the PDF report</a>
+    <a class="btn" href="https://drpoojashah.github.io/ramp-software-spending-dashboard/">See the companion dashboard</a>
+  </div>
+
+  <footer>Built by Pooja Shah, Data Scientist · M.S. Data Analytics Engineering, George Mason University · <a href="https://www.linkedin.com/in/drpoojashah">LinkedIn</a> · <a href="https://github.com/DrPoojaShah">GitHub</a></footer>
+</div>
+<script>
+const DATA = {"vendors": [{"month": "2025-01", "all": 35.5, "openai": 33.7, "anthropic": 10.6}, {"month": "2025-02", "all": 36.6, "openai": 34.8, "anthropic": 11.0}, {"month": "2025-03", "all": 37.4, "openai": 35.4, "anthropic": 11.9}, {"month": "2025-04", "all": 38.9, "openai": 37.1, "anthropic": 11.8}, {"month": "2025-05", "all": 40.2, "openai": 38.4, "anthropic": 12.3}, {"month": "2025-06", "all": 41.1, "openai": 39.1, "anthropic": 13.6}, {"month": "2025-07", "all": 42.5, "openai": 40.0, "anthropic": 14.9}, {"month": "2025-08", "all": 43.4, "openai": 40.7, "anthropic": 15.6}, {"month": "2025-09", "all": 43.7, "openai": 41.0, "anthropic": 15.9}, {"month": "2025-10", "all": 43.5, "openai": 40.6, "anthropic": 16.6}, {"month": "2025-11", "all": 44.4, "openai": 41.1, "anthropic": 17.2}, {"month": "2025-12", "all": 44.4, "openai": 40.9, "anthropic": 17.8}, {"month": "2026-01", "all": 45.4, "openai": 40.8, "anthropic": 21.1}, {"month": "2026-02", "all": 47.7, "openai": 40.8, "anthropic": 26.9}, {"month": "2026-03", "all": 50.1, "openai": 40.0, "anthropic": 33.6}, {"month": "2026-04", "all": 51.9, "openai": 39.4, "anthropic": 38.1}, {"month": "2026-05", "all": 53.2, "openai": 39.3, "anthropic": 40.6}, {"month": "2026-06", "all": 53.9, "openai": 39.1, "anthropic": 42.0}, {"month": "2026-07", "all": 54.8, "openai": 39.4, "anthropic": 43.1}, {"month": "2026-08", "all": 55.2, "openai": 39.5, "anthropic": 43.4}, {"month": "2026-09", "all": 55.8, "openai": 40.6, "anthropic": 43.7}, {"month": "2026-10", "all": 56.8, "openai": 40.6, "anthropic": 44.8}], "size": [{"month": "2025-12", "size": "Small", "pct": 39.07875}, {"month": "2025-12", "size": "Medium", "pct": 48.15131}, {"month": "2025-12", "size": "Large", "pct": 53.299}, {"month": "2026-10", "size": "Small", "pct": 51.22897}, {"month": "2026-10", "size": "Medium", "pct": 63.2076}, {"month": "2026-10", "size": "Large", "pct": 66.70752}]};
+const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const mfmt = (m) => d3.utcFormat('%b %Y')(new Date(m + '-01T00:00:00Z'));
+
+function sizeTable() {
+  const tb = document.getElementById('sizeRows'); tb.replaceChildren();
+  ['Small', 'Medium', 'Large'].forEach((s) => {
+    const a = DATA.size.find((r) => r.size === s && r.month === '2025-12').pct, b = DATA.size.find((r) => r.size === s && r.month === '2026-10').pct;
+    const tr = document.createElement('tr');
+    [[s, ''], [a.toFixed(1) + '%', 'num'], [b.toFixed(1) + '%', 'num'], ['+' + (b - a).toFixed(1) + ' pts', 'num pos']].forEach(([t, c]) => { const td = document.createElement('td'); td.textContent = t; td.className = c; tr.appendChild(td); });
+    tb.appendChild(tr);
+  });
+}
+
+function chart() {
+  const el = document.getElementById('chart'); el.replaceChildren();
+  const rows = DATA.vendors, W = el.clientWidth || 700, H = Math.max(300, Math.min(400, W * 0.55)), top = 16, bottom = 28, left = 36;
+  const series = [{ k: 'all', name: 'All AI vendors', col: css('--neutral'), w: 2.5 }, { k: 'openai', name: 'OpenAI', col: css('--light'), w: 2 }, { k: 'anthropic', name: 'Anthropic', col: css('--accent'), w: 3 }];
+  const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img').attr('aria-label', 'AI adoption by vendor, January 2025 to October 2026');
+  const last = rows.at(-1), labs = series.map((s) => `${s.name} ${last[s.k].toFixed(1)}%`);
+  const tmp = svg.append('text').attr('class', 'strong'); let endW = 0; labs.forEach((l) => { tmp.text(l); endW = Math.max(endW, tmp.node().getComputedTextLength() || l.length * 6.5); }); tmp.remove(); endW += 14;
+  const x = d3.scalePoint().domain(rows.map((r) => r.month)).range([left, W - endW]);
+  const y = d3.scaleLinear().domain([0, 60]).range([H - bottom, top]);
+  [0, 20, 40, 60].forEach((t) => { svg.append('line').attr('x1', left).attr('x2', W - endW).attr('y1', y(t)).attr('y2', y(t)).style('stroke', css('--grid')); svg.append('text').attr('x', left - 6).attr('y', y(t) + 4).attr('text-anchor', 'end').text(t + '%'); });
+  const ticks = rows.map((r) => r.month).filter((m, i, a) => m.endsWith('-01') || m.endsWith('-07') || i === a.length - 1);
+  const lastX = x(ticks.at(-1)); ticks.filter((m, i, a) => i === a.length - 1 || lastX - x(m) > 55).forEach((m) => svg.append('text').attr('x', x(m)).attr('y', H - 8).attr('text-anchor', 'middle').text(d3.utcFormat(W < 500 ? '%b %y' : '%b %Y')(new Date(m + '-01T00:00:00Z'))));
+  svg.append('line').attr('x1', x('2025-12')).attr('x2', x('2025-12')).attr('y1', top).attr('y2', H - bottom).style('stroke', css('--axis')).style('stroke-dasharray', '4 4');
+  series.forEach((s) => svg.append('path').attr('d', d3.line().x((r) => x(r.month)).y((r) => y(r[s.k]))(rows)).style('fill', 'none').style('stroke', s.col).style('stroke-width', s.w));
+  const ends = series.map((s, i) => ({ s, i, y: y(last[s.k]) })).sort((a, b) => a.y - b.y);
+  for (let k = 1; k < ends.length; k++) if (ends[k].y - ends[k - 1].y < 15) ends[k].y = ends[k - 1].y + 15;
+  ends.forEach(({ s, i, y: ly }) => { svg.append('circle').attr('cx', x(last.month)).attr('cy', y(last[s.k])).attr('r', 3.5).style('fill', s.col); svg.append('text').attr('class', s.k === 'anthropic' ? 'acc' : 'strong').attr('x', x(last.month) + 8).attr('y', ly + 4).text(labs[i]); });
+  const dec = rows.find((r) => r.month === '2025-12');
+  svg.append('text').attr('class', 'strong').attr('x', x('2025-12') - 6).attr('y', y(dec.all) - 8).attr('text-anchor', 'end').text(dec.all.toFixed(1) + '%');
+  svg.append('text').attr('class', 'acc').attr('x', x('2025-12') - 6).attr('y', y(dec.anthropic) + 16).attr('text-anchor', 'end').text(dec.anthropic.toFixed(1) + '%');
+  let t = el.querySelector('.tip'); if (!t) { t = document.createElement('div'); t.className = 'tip'; t.hidden = true; el.appendChild(t); }
+  const hl = svg.append('line').attr('y1', top).attr('y2', H - bottom).style('stroke', css('--axis')).style('opacity', 0);
+  svg.append('rect').attr('x', left).attr('y', top).attr('width', W - endW - left).attr('height', H - bottom - top).style('fill', 'transparent')
+    .on('mousemove', (ev) => {
+      const [mx] = d3.pointer(ev); const i = d3.minIndex(rows, (r) => Math.abs(x(r.month) - mx)); const r = rows[i];
+      hl.attr('x1', x(r.month)).attr('x2', x(r.month)).style('opacity', 1);
+      t.replaceChildren(...[mfmt(r.month), ...series.map((s) => `${s.name}: ${r[s.k].toFixed(1)}%`)].map((s) => { const d = document.createElement('div'); d.textContent = s; return d; }));
+      t.hidden = false; const b = el.getBoundingClientRect(); let tx = ev.clientX - b.left + 12; if (tx + t.offsetWidth > b.width) tx = ev.clientX - b.left - t.offsetWidth - 12;
+      t.style.left = tx + 'px'; t.style.top = (ev.clientY - b.top + 12) + 'px';
+    })
+    .on('mouseleave', () => { t.hidden = true; hl.style('opacity', 0); });
+}
+sizeTable(); chart();
+let rt; window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(chart, 150); });
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', chart);
+</script>
+</body>
+</html>
